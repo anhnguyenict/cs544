@@ -30,8 +30,8 @@ public class Application {
 			tx = session.beginTransaction();
 			// Create new instance of Employee and set values in it
 			Employee employee = new Employee();
-			employee.setFirstname("Frank");
-			employee.setLastname("Miller");
+			employee.setFirstname("Phan Anh");
+			employee.setLastname("Nguyen");
 			// save the employee
 			session.persist(employee);
 			tx.commit();
