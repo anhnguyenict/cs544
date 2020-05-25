@@ -27,5 +27,6 @@
 
         <!-- Mapping files -->
         <mapping resource="Laptop.hbm.xml"/>
+        <mapping resource="Person.hbm.xml"/>
       </session-factory>
 </hibernate-configuration>
