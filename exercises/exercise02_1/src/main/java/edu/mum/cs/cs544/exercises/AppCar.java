@@ -65,7 +65,7 @@ public class AppCar {
                 System.out.println("brand= " + car.getBrand() + ", year= "
                         + car.getYear() + ", price= " + car.getPrice());
             }
-            tx.commit();
+            //tx.commit();
 
         } catch (HibernateException e) {
             if (tx != null) {
