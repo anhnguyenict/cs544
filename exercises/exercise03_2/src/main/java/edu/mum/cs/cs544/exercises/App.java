@@ -1,7 +1,10 @@
 package edu.mum.cs.cs544.exercises;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -22,7 +25,7 @@ public class App {
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         // a
         aCreateObjects();
         aPrint();
@@ -34,6 +37,18 @@ public class App {
         // c
         cCreateObjects();
         cPrint();
+
+        // d
+        dCreateObjects();
+        dPrint();
+
+        // e
+        eCreateObjects();
+        ePrint();
+
+        // e
+        fCreateObjects();
+        fPrint();
 
         closeSessionFactory();
     }
@@ -238,6 +253,212 @@ public class App {
                 for (Student s : students) {
                     System.out.println("Student name = " + s.getFirstname() + " " + s.getLastname());
                 }
+            }
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void dCreateObjects() throws ParseException {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Customer c1 = new Customer("Customer 1");
+            Customer c2 = new Customer("Customer 2");
+
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
+            Reservation r1 = new Reservation(df.parse("05/18/2020"));
+            Reservation r2 = new Reservation(df.parse("05/19/2020"));
+            Reservation r3 = new Reservation(df.parse("05/20/2020"));
+
+            ArrayList<Reservation> rl1 = new ArrayList<Reservation>();
+            rl1.add(r1);
+            rl1.add(r2);
+            c1.setReservation(rl1);
+
+            ArrayList<Reservation> rl2 = new ArrayList<Reservation>();
+            rl2.add(r3);
+            c2.setReservation(rl2);
+
+            session.persist(c1); // execute insert query
+            session.persist(c2); // execute insert query
+            session.persist(r1); // execute 1 insert query + 1 update
+            session.persist(r2); // execute 1 insert query + 1 update
+            session.persist(r3); // execute 1 insert query + 1 update
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void dPrint() {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
+            List<Customer> customerList = session.createQuery("from Customer").list(); // execute 1 select query
+            for (Customer c : customerList) {
+                System.out.println("Customer name = " + c.getName());
+                List<Reservation> reservation = c.getReservation(); // execute 1 select query
+                for (Reservation r : reservation) {
+                    System.out.println("Reservation date = " + df.format(r.getDate()));
+                }
+            }
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void eCreateObjects() throws ParseException {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Book b1 = (Book) session.get(Book.class, "B001");
+            Reservation r1 = (Reservation) session.get(Reservation.class, 1);
+            r1.setBook(b1);
+            Reservation r2 = (Reservation) session.get(Reservation.class, 2);
+            r2.setBook(b1);
+            Book b3 = (Book) session.get(Book.class, "B003");
+            Reservation r3 = (Reservation) session.get(Reservation.class, 3);
+            r3.setBook(b3);
+
+            session.persist(r1); // execute 1 insert query + 1 update
+            session.persist(r2); // execute 1 insert query + 1 update
+            session.persist(r3); // execute 1 insert query + 1 update
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void ePrint() {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
+            List<Reservation> reservationList = session.createQuery("from Reservation").list(); // execute 1 select
+                                                                                                // query
+            for (Reservation r : reservationList) {
+                System.out.println("Reservation id = " + r.getId() + ", Reservation date = " + df.format(r.getDate())
+                        + ", Book ISBN = " + r.getBook().getIsbn());
+            }
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void fCreateObjects() throws ParseException {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            Office o1 = new Office(1, "Office 1");
+            Employee e1 = (Employee) session.get(Employee.class, 1);
+            Employee e2 = (Employee) session.get(Employee.class, 2);
+//            List<Employee> el1 = new ArrayList<Employee>();
+//            el1.add(e1);
+//            el1.add(e2);
+//            o1.setEmployees(el1);
+            e1.setOffice(o1);
+            e2.setOffice(o1);
+
+            session.persist(o1); // execute 1 insert query
+            session.persist(e1); // execute 1 select query + 1 update query
+            session.persist(e2); // execute 1 insert query + 1 update query
+
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) {
+                System.err.println("Rolling back: " + e.getMessage());
+                tx.rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void fPrint() {
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+
+            List<Employee> employeeList = session.createQuery("from Employee").list(); // execute 1 select query
+            for (Employee e : employeeList) {
+                System.out.println("Employee name = " + e.getName() + ", Department name = "
+                        + e.getDepartment().getName() + ", Office building = " + e.getOffice().getBuilding());
             }
 
             tx.commit();

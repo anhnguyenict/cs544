@@ -20,6 +20,10 @@ public class Employee {
     @JoinColumn(name = "department_id")
     //@JoinTable(name = "department_employee")
     private Department department;
+    
+    @ManyToOne
+    @JoinColumn(name = "office_roomnumber")
+    private Office office;
 
     public Employee() {
 
@@ -51,5 +55,13 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
     }
 }
