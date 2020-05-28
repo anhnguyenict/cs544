@@ -2,6 +2,9 @@ package cs544.exercise12_1.bank.service;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import cs544.exercise12_1.bank.dao.AccountDAO;
 import cs544.exercise12_1.bank.dao.IAccountDAO;
 import cs544.exercise12_1.bank.domain.Account;
@@ -11,24 +14,52 @@ import cs544.exercise12_1.bank.jms.JMSSender;
 import cs544.exercise12_1.bank.logging.ILogger;
 import cs544.exercise12_1.bank.logging.Logger;
 
-
-
-
-
 public class AccountService implements IAccountService {
+//    @Autowired
+//    @Qualifier("accountDAO")
 	private IAccountDAO accountDAO;
+//    @Autowired
+//    @Qualifier("currencyConverter")
 	private ICurrencyConverter currencyConverter;
+//    @Autowired
+//    @Qualifier("jmsSender")
 	private IJMSSender jmsSender;
+//    @Autowired
+//    @Qualifier("logger")
 	private ILogger logger;
 	
 	public AccountService(){
-		accountDAO=new AccountDAO();
-		currencyConverter= new CurrencyConverter();
-		jmsSender =  new JMSSender();
-		logger = new Logger();
+//		accountDAO=new AccountDAO();
+//		currencyConverter= new CurrencyConverter();
+//		jmsSender =  new JMSSender();
+//		logger = new Logger();
+	}
+	
+	public AccountService(IAccountDAO accountDAO, ICurrencyConverter currencyConverter, IJMSSender jmsSender,
+	        ILogger logger) {
+	    this.accountDAO = accountDAO;
+	    this.currencyConverter = currencyConverter;
+	    this.jmsSender = jmsSender;
+	    this.logger = logger;
 	}
 
-	public Account createAccount(long accountNumber, String customerName) {
+    public void setAccountDAO(IAccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
+    public void setCurrencyConverter(ICurrencyConverter currencyConverter) {
+        this.currencyConverter = currencyConverter;
+    }
+
+    public void setJmsSender(IJMSSender jmsSender) {
+        this.jmsSender = jmsSender;
+    }
+
+    public void setLogger(ILogger logger) {
+        this.logger = logger;
+    }
+
+    public Account createAccount(long accountNumber, String customerName) {
 		Account account = new Account(accountNumber);
 		Customer customer = new Customer(customerName);
 		account.setCustomer(customer);
@@ -37,7 +68,7 @@ public class AccountService implements IAccountService {
 		return account;
 	}
 
-	public void deposit(long accountNumber, double amount) {
+    public void deposit(long accountNumber, double amount) {
 		Account account = accountDAO.loadAccount(accountNumber);
 		account.deposit(amount);
 		accountDAO.updateAccount(account);
