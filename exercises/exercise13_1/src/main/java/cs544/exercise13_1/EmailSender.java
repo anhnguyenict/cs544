@@ -3,7 +3,7 @@ package cs544.exercise13_1;
 public class EmailSender implements IEmailSender {
 	String outgoingMailServer = "smtp.acme.com";
 
-	public String getOutgoingMailServer() {
+    public String getOutgoingMailServer() {
 		return outgoingMailServer;
 	}
 
