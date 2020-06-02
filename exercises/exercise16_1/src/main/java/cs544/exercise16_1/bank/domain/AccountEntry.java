@@ -2,7 +2,16 @@ package cs544.exercise16_1.bank.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class AccountEntry {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 	private Date date;
 	private double amount;
 	private String description;
