@@ -1,0 +1,36 @@
+Lab08
+a/
+- 1st: To fetch this data from the database took 1498 milliseconds.
+- 2nd: To fetch this data from the database took 1501 milliseconds.
+- 3rd: To fetch this data from the database took 1628 milliseconds.
+
+b/ Batch fetching
+@BatchSize(size=10)
+- 1st: To fetch this data from the database took 1638 milliseconds.
+- 2nd: To fetch this data from the database took 1901 milliseconds.
+- 3rd: To fetch this data from the database took 1730 milliseconds.
+
+@BatchSize(size=5)
+- 1st: To fetch this data from the database took 1814 milliseconds.
+- 2nd: To fetch this data from the database took 1633 milliseconds.
+- 3rd: To fetch this data from the database took 1881 milliseconds.
+
+@BatchSize(size=50)
+- 1st: To fetch this data from the database took 1710 milliseconds.
+- 2nd: To fetch this data from the database took 1606 milliseconds.
+- 3rd: To fetch this data from the database took 1639 milliseconds.
+
+c/ Sub-select strategy 
+- 1st: To fetch this data from the database took 552 milliseconds.
+- 2nd: To fetch this data from the database took 590 milliseconds.
+- 3rd: To fetch this data from the database took 536 milliseconds.
+
+d/ Join fetch query 
+- 1st: To fetch this data from the database took 539 milliseconds.
+- 2nd: To fetch this data from the database took 607 milliseconds.
+- 3rd: To fetch this data from the database took 596 milliseconds.
+
+3/ Always join strategy
+- 1st: To fetch this data from the database took 955 milliseconds.
+- 2nd: To fetch this data from the database took 525 milliseconds.
+- 3rd: To fetch this data from the database took 561 milliseconds.

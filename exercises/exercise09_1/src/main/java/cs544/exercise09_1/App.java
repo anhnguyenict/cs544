@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,9 +20,8 @@ public class App {
     static {
         Configuration configuration = new Configuration();
         configuration.configure();
-        ServiceRegistry serviceRegistry
-                = new StandardServiceRegistryBuilder().applySettings(
-                        configuration.getProperties()).build();
+        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties()).build();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
     }
 
@@ -64,13 +64,15 @@ public class App {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
 
-            Criteria criteria = session.createCriteria(Owner.class);
+//            Criteria criteria = session.createCriteria(Owner.class);
+
+            Criteria criteria = session.createCriteria(Owner.class).setFetchMode("pets", FetchMode.JOIN)
+                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             @SuppressWarnings("unchecked")
             List<Owner> ownerlist = criteria.list();
             for (Owner owner : ownerlist) {
                 for (Pet pet : owner.getPets()) {
-                    System.out.println("Owner name= " + owner.getName()
-                            + "pet name= " + pet.getName());
+                    System.out.println("Owner name= " + owner.getName() + "pet name= " + pet.getName());
                 }
             }
 
@@ -88,8 +90,7 @@ public class App {
         }
         // stop time
         long stop = System.nanoTime();
-        System.out.println("To fetch this data from the database took "
-                + (stop - start) / 1000000 + " milliseconds.");
+        System.out.println("To fetch this data from the database took " + (stop - start) / 1000000 + " milliseconds.");
         System.exit(0);
     }
 

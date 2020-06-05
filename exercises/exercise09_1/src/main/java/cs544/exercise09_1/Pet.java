@@ -6,33 +6,33 @@ import javax.persistence.Id;
 
 @Entity
 public class Pet {
-	@Id  
+    @Id
     @GeneratedValue
     private int id;
     private String name;
-    
-	public Pet() {
-	}
 
-	public Pet(String name) {
-		super();
-		this.name = name;
-	}
+    public Pet() {
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Pet(String name) {
+        super();
+        this.name = name;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
