@@ -1,0 +1,7 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: simple-aggregator-service
+    
+simple-geography-service: simple-geography-service
