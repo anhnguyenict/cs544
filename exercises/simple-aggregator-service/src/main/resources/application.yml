@@ -3,5 +3,8 @@ server:
 spring:
   application:
     name: simple-aggregator-service
-    
 simple-geography-service: simple-geography-service
+geography-service:
+  service-name: simple-geography-service
+  username: app-user
+  password: c1e3d0fa-5aa8-4be7-83f7-32974dd617bf

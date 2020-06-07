@@ -1,6 +1,6 @@
 server:
   port: 8080
-spring:    
+spring:
   application:
     name: simple-geography-service
   datasource:
@@ -17,4 +17,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  security:
+    user:
+      name: app-user
+      password: c1e3d0fa-5aa8-4be7-83f7-32974dd617bf
 
